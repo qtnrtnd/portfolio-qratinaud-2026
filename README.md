@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# madebyquent.in - portfolio
 
-## Getting Started
+Personal portfolio of **Quentin Ratinaud**, a creative full-stack developer based in Rennes, FR. A single codebase that serves two audience-specific variants of the site from the same content.
 
-First, run the development server:
+🔗 **Live:** [madebyquent.in](https://madebyquent.in)
+
+## Stack
+
+- **[Next.js 16](https://nextjs.org)** (App Router, React Server Components, Server Actions)
+- **[React 19](https://react.dev)** with the React Compiler enabled
+- **[Tailwind CSS v4](https://tailwindcss.com)**
+- **TypeScript** (strict mode)
+- **[Cloudflare Workers](https://workers.cloudflare.com)** via **[OpenNext](https://opennext.js.org/cloudflare)**
+- **[Resend](https://resend.com)** for the contact form
+
+## Features
+
+- **Audience-aware variants** - the same routes render a `web` variant (e.g. `web.madebyquent.in`) or the default variant, resolved server-side from the host or an `x-site-target` header. See [`src/lib/site-target.ts`](src/lib/site-target.ts).
+- **Dynamic case studies** - server-rendered project pages under [`src/app/work/[slug]`](src/app/work), driven by typed data in [`src/lib/data`](src/lib/data).
+- **Contact form** - progressive-enhancement form backed by a Server Action that sends email through Resend, with honeypot spam protection. See [`src/app/contact/actions.ts`](src/app/contact/actions.ts).
+- **SEO** - dynamic metadata, generated OpenGraph image, favicon, `robots.txt`, and `sitemap.xml`.
+
+## Getting started
+
+Requires **Node.js 18.18+**.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The contact form needs a Resend API key. For local development, copy the example file and fill it in:
 
-## Learn More
+```bash
+cp .dev.vars.example .dev.vars
+# then set RESEND_API_KEY=... in .dev.vars
+```
 
-To learn more about Next.js, take a look at the following resources:
+`.dev.vars` is gitignored. The `from` address must use a domain verified in your Resend account.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build (webpack) |
+| `npm run lint` | Lint with ESLint (flat config) |
+| `npm run typecheck` | Type-check with `tsc --noEmit` |
+| `npm run preview` | Build and preview the Cloudflare Worker locally |
+| `npm run deploy` | Build and deploy to Cloudflare Workers |
+| `npm run cf-typegen` | Regenerate Cloudflare env types |
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deployed to Cloudflare Workers with OpenNext. Set the production secret once:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npx wrangler secret put RESEND_API_KEY
+npm run deploy
+```
+
+## License
+
+[MIT](LICENSE) © Quentin Ratinaud
