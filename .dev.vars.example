@@ -1,0 +1,6 @@
+# Local secrets for `wrangler`/OpenNext dev. Copy to `.dev.vars` and fill in.
+# `.dev.vars` is gitignored - never commit real keys.
+# In production, set with: npx wrangler secret put RESEND_API_KEY
+
+# Resend API key - powers the /contact form (https://resend.com/api-keys)
+RESEND_API_KEY=
