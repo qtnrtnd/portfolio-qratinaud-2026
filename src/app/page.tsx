@@ -37,7 +37,7 @@ export default async function Home() {
             </div>
             <div>
               <span className="relative z-1">
-                {hero.line3}<span className="text-accent-3">-</span>
+                {hero.line3}<span className="text-accent-3">—</span>
               </span>
             </div>
           </h1>
